@@ -47,7 +47,7 @@ const add = function add(quantidadeCarrinho, nomeManga) {
 
 const getCarrinho = function (callback) {
     abrirConexao();
-    let sql = "SELECT c.idCarrinho, m.nomeManga, c.quantidadeCarrinho FROM carrinho c INNER JOIN Manga m ON m.idManga = c.idManga WHERE idUsuario = 1";
+    let sql = "SELECT c.idCarrinho, m.nomeManga, m.valorManga, c.quantidadeCarrinho FROM carrinho c INNER JOIN Manga m ON m.idManga = c.idManga WHERE idUsuario = 1";
     connection.query(sql, function (error, results, fields) {
         if (error) {
             console.error("Erro ao executar a consulta:", error);

@@ -43,7 +43,7 @@
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Offcanvas right</h5>
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Carrinho - <i class="bi bi-cart2"></i></h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body" id="conteudoCarrinho">
@@ -140,23 +140,76 @@
         crossorigin="anonymous"></script>
 </body>
 <script>
-    window.addEventListener('DOMContentLoaded', () => {
-        const conteudoCarrinho = document.getElementById('conteudoCarrinho');
+    // Função para criar um card de item no carrinho
+    function createCartItemCard(item) {
+        const card = document.createElement('div');
+        card.classList.add('card', 'mb-3');
 
-        // Fazer a requisição para a rota de consulta
+        const cardBody = document.createElement('div');
+        cardBody.classList.add('card-body');
+
+        const paragrafo = document.createElement('p');
+        paragrafo.classList.add('card-text');
+        paragrafo.innerHTML = `<b>${item.nomeManga}</b> - ${item.quantidadeCarrinho} Unidades`;
+        cardBody.appendChild(paragrafo);
+
+        const deleteButton = createDeleteButton(item.idCarrinho);
+        cardBody.appendChild(deleteButton);
+
+        card.appendChild(cardBody);
+
+        return card;
+    }
+
+    // Função para criar um botão de exclusão
+    function createDeleteButton(itemId) {
+        const deleteButton = document.createElement('button');
+        deleteButton.classList.add('btn', 'btn-outline-danger');
+        deleteButton.type = 'button';
+        deleteButton.textContent = 'Deletar';
+        deleteButton.value = itemId;
+        deleteButton.addEventListener('click', () => {
+            // Lógica para lidar com a exclusão do item aqui
+            console.log(`Excluir item com ID: ${itemId}`);
+        });
+        return deleteButton;
+    }
+
+    // Função para criar o botão "Fechar Pedido"
+    function createCheckoutButton() {
+        const checkoutButton = document.createElement('button');
+        checkoutButton.classList.add('btn', 'btn-outline-success', 'mt-3');
+        checkoutButton.type = 'button';
+        checkoutButton.style.margin = "auto"
+        checkoutButton.textContent = 'Fechar Pedido';
+        checkoutButton.style.display = "block";
+        checkoutButton.addEventListener('click', () => {
+            // Lógica para lidar com o fechamento do pedido aqui
+            console.log('Pedido fechado!');
+        });
+        return checkoutButton;
+    }
+
+    // Função principal para carregar os itens do carrinho
+    function loadCartItems() {
+        const conteudoCarrinho = document.getElementById('conteudoCarrinho');
         fetch('/carrinho/get')
             .then(response => response.json())
             .then(data => {
-                // Atualizar o conteúdo do offcanvas com os resultados
                 data.forEach(item => {
-                    const divItem = document.createElement('div');
-                    divItem.textContent = `${item.nomeManga} - ${item.quantidadeCarrinho}`;
-                    conteudoCarrinho.appendChild(divItem);
+                    const total = item.valorManga * item.quantidadeCarrinho;
+                    console.log(total);
+                    const card = createCartItemCard(item);
+                    conteudoCarrinho.appendChild(card);
                 });
-
+                const checkoutButton = createCheckoutButton();
+                conteudoCarrinho.appendChild(checkoutButton);
             })
             .catch(error => console.error(error));
-    });
+    }
+
+    // Carregar os itens do carrinho quando o DOM estiver pronto
+    window.addEventListener('DOMContentLoaded', loadCartItems);
 </script>
 
 </html>

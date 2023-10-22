@@ -21,7 +21,6 @@ app.get("/manga", function (req, res) {
 
 app.post('/manga/add', (req, res) => {
     const { quantidadeCarrinho, nomeManga } = req.body;
-    console.log(nomeManga);
     con.add(quantidadeCarrinho, nomeManga);
     res.redirect('/manga');
 });
