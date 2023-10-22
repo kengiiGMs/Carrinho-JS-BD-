@@ -150,7 +150,8 @@
 
         const paragrafo = document.createElement('p');
         paragrafo.classList.add('card-text');
-        paragrafo.innerHTML = `<b>${item.nomeManga}</b> - ${item.quantidadeCarrinho} Unidades`;
+        const precoTotal = (item.valorManga * item.quantidadeCarrinho).toFixed(2);
+        paragrafo.innerHTML = `<b>${item.nomeManga}</b> - ${item.quantidadeCarrinho} Unidades - ${precoTotal}`;
         cardBody.appendChild(paragrafo);
 
         const deleteButton = createDeleteButton(item.idCarrinho);
@@ -190,20 +191,32 @@
         return checkoutButton;
     }
 
+    function createTotalPrice(finalPrice) {
+        const totalPrice = document.createElement('p');
+
+        totalPrice.innerHTML = `Preço Final: <b> ${finalPrice}</b>`;
+        totalPrice.style.margin = "10px"
+        totalPrice.style.textAlign = "center"
+        return totalPrice;
+    }
+
     // Função principal para carregar os itens do carrinho
     function loadCartItems() {
+        let finalPrice = 0;
         const conteudoCarrinho = document.getElementById('conteudoCarrinho');
         fetch('/carrinho/get')
             .then(response => response.json())
             .then(data => {
                 data.forEach(item => {
-                    const total = item.valorManga * item.quantidadeCarrinho;
-                    console.log(total);
                     const card = createCartItemCard(item);
                     conteudoCarrinho.appendChild(card);
+                    const precoTotalItem = item.valorManga * item.quantidadeCarrinho;
+                    finalPrice += precoTotalItem;
                 });
+                const totalPrice = createTotalPrice(finalPrice);
                 const checkoutButton = createCheckoutButton();
                 conteudoCarrinho.appendChild(checkoutButton);
+                conteudoCarrinho.appendChild(totalPrice);
             })
             .catch(error => console.error(error));
     }
