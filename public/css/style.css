@@ -1,0 +1,93 @@
+/* ALL */
+:root {
+    --purple: #6467F2
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.center {
+    text-align: center;
+}
+
+.colorPurple {
+    color: var(--purple) !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Button */
+.btn-purple {
+    color: var(--purple);
+    border-color: var(--purple);
+    transition: all 0.5s;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.btn-purple:hover {
+    color: white;
+    background-color: var(--purple);
+    box-shadow: none;
+}
+
+.btn-purple:active {
+    background-color: var(--purple) !important;
+    color: white !important;
+}
+
+/* Button */
+
+/* InputSearch */
+.input-search:focus {
+    box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, var(--purple) 0px 0px 0px 1px;
+    border-color: var(--purple);
+}
+
+/* InputSearch */
+
+/* All */
+
+/* NavBar */
+.linkAnimation {
+    transition: all 0.5s;
+}
+
+.linkAnimation:hover {
+    border-bottom: 1px solid var(--purple);
+    color: var(--purple);
+    text-decoration-color: var(--purple);
+}
+
+.linkactive {
+    border-bottom: 1px solid var(--purple);
+    color: var(--purple) !important;
+    text-decoration-color: var(--purple);
+}
+
+/* NavBar */
+
+
+
+.containerCards {
+    margin-top: 1rem;
+}
+
+.containerCarrousel {
+    margin-top: 1rem;
+}
+
+/* Footer */
+
+.linkfooter {
+    color: gray;
+    transition: all 0.3s;
+}
+
+.linkfooter:hover {
+    color: var(--purple);
+}
