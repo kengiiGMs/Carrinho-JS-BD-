@@ -63,7 +63,7 @@
         <div class="card" style="width: 18rem;">
             <img src="img/onepiece.png" class="card-img-top" alt="...">
         </div>
-        <form action="/manga/add" method="post">
+        <form action="/carrinho/add" method="post">
             <label for="quantidadeCarrinho">Quantidade</label>
             <input type="number" class="form-control input-search" id="quantidadeCarrinho" name="quantidadeCarrinho"
                 placeholder="Digite a Quantidade" max="10" min="1">
@@ -139,6 +139,7 @@
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
 </body>
+
 <script>
     // Função para criar um card de item no carrinho
     function createCartItemCard(item) {
@@ -163,15 +164,26 @@
     }
 
     // Função para criar um botão de exclusão
-    function createDeleteButton(itemId) {
+    function createDeleteButton(idCarrinho) {
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('btn', 'btn-outline-danger');
         deleteButton.type = 'button';
         deleteButton.textContent = 'Deletar';
-        deleteButton.value = itemId;
-        deleteButton.addEventListener('click', () => {
-            // Lógica para lidar com a exclusão do item aqui
-            console.log(`Excluir item com ID: ${itemId}`);
+        deleteButton.value = idCarrinho;
+        deleteButton.addEventListener('click', function () {
+            const id = this.value;
+            fetch(`/carrinho/delete/${id}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log(`Item com ID ${id} excluído com sucesso.`);
+                        deleteButton.closest('.card').remove();
+                    } else {
+                        console.error('Erro ao excluir item do carrinho.');
+                    }
+                })
+                .catch(error => console.error(error));
         });
         return deleteButton;
     }

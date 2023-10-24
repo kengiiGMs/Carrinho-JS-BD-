@@ -19,7 +19,7 @@ app.get("/manga", function (req, res) {
     res.sendFile('/manga_produto.html', { root: __dirname });
 })
 
-app.post('/manga/add', (req, res) => {
+app.post('/carrinho/add', (req, res) => {
     const { quantidadeCarrinho, nomeManga } = req.body;
     con.add(quantidadeCarrinho, nomeManga);
     res.redirect('/manga');
@@ -33,6 +33,13 @@ app.get('/carrinho/get', (req, res) => {
             res.json(resultados);
         }
     });
+});
+
+app.delete('/carrinho/delete/:id', (req, res) => {
+    const idCarrinho = req.params.id;
+    console.log(idCarrinho);
+    con.deleteItem(idCarrinho);
+    res.sendStatus(200);
 });
 
 

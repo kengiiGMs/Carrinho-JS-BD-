@@ -28,9 +28,7 @@ function switchName(nomeManga) {
 const add = function add(quantidadeCarrinho, nomeManga) {
     abrirConexao();
     let sql = "INSERT INTO carrinho (idManga,idUsuario,quantidadeCarrinho) VALUES (?, ? ,?) ";
-    console.log(nomeManga);
     let idManga = switchName(nomeManga);
-    console.log(idManga);
     let idUsuario = 1;
 
     let dados = [idManga, idUsuario, quantidadeCarrinho];
@@ -59,7 +57,21 @@ const getCarrinho = function (callback) {
     })
 }
 
+const deleteItem = function add(idCarrinho) {
+    abrirConexao();
+    let sql = "DELETE FROM carrinho where idCarrinho = ?";
+    connection.query(sql, idCarrinho, function (error, results, fields) {
+        if (error) {
+            console.error("Erro ao executar a exclusão:", error);
+
+        } else {
+            console.log("Produto do Carrinho Deletetado do Banco com Sucesso!", results.insertId);
+        }
+    });
+
+}
 
 
 exports.add = add;
 exports.getCarrinho = getCarrinho;
+exports.deleteItem = deleteItem;
