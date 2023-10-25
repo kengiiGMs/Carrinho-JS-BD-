@@ -41,7 +41,24 @@ foreign key (idUsuario) references usuario(idUsuario)
 );
 SELECT * FROM carrinho;
 
-SELECT c.idCarrinho, m.nomeManga, c.quantidadeCarrinho,m.valorManga FROM carrinho c INNER JOIN Manga m ON m.idManga = c.idManga WHERE idUsuario = 1;
+create table pedido(
+idPedido int not null auto_increment,
+idUsuario int not null,
+dataPedido datetime not null,
+status char(1) not null,
+primary key(idPedido),
+foreign key (idUsuario) references usuario(idUsuario)
+);
 
-drop table carrinho;
-drop table manga;
+create table itensPedido(
+ idItemPedido int not null auto_increment,
+ idPedido int not null,
+ idManga int not null,
+ quantidade int not null,
+ primary key (idItemPedido),
+ foreign key (idPedido) references pedido(idPedido),
+ foreign key (idManga) references manga(idManga)
+)
+
+SELECT c.idUsuario, COALESCE(SUM(m.valorManga * c.quantidadeCarrinho),0) as valorTotalCarrinho FROM carrinho c JOIN manga m ON c.idManga = m.idManga WHERE c.idUsuario = 1 GROUP BY c.idUsuario
+

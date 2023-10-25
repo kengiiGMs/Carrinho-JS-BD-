@@ -66,7 +66,7 @@
         <form action="/carrinho/add" method="post">
             <label for="quantidadeCarrinho">Quantidade</label>
             <input type="number" class="form-control input-search" id="quantidadeCarrinho" name="quantidadeCarrinho"
-                placeholder="Digite a Quantidade" max="10" min="1">
+                placeholder="Digite a Quantidade" max="10" min="1" required>
             <button class="btn btn-outline btn-purple" type="submit" value="OnePiece" name="nomeManga">Adicionar ao
                 Carrinho</button>
         </form>
@@ -196,7 +196,14 @@
         fetch('/carrinho/get/finalValue')
             .then(response => response.json())
             .then(data => {
-                const totalPriceElement = createTotalPriceElement(data[0].valorTotalCarrinho);
+                let totalPriceElement;
+                if (Array.isArray(data) && data.length > 0) {
+                    totalPriceElement = createTotalPriceElement(data[0].valorTotalCarrinho);
+                } else {
+                    totalPriceElement = createTotalPriceElement(0);
+                }
+
+
                 // Substitui o elemento existente com o novo elemento que contém o valor atualizado
                 const existingTotalPriceElement = document.getElementById('totalPriceElement');
                 existingTotalPriceElement.parentNode.replaceChild(totalPriceElement, existingTotalPriceElement);
@@ -247,7 +254,13 @@
                 conteudoCarrinho.appendChild(card);
             });
 
-            const totalPriceElement = createTotalPriceElement(dataCarrinho[0].valorTotalCarrinho);
+            let totalPriceElement;
+            if (Array.isArray(dataCarrinho) && dataCarrinho.length > 0) {
+                totalPriceElement = createTotalPriceElement(dataCarrinho[0].valorTotalCarrinho);
+            } else {
+                totalPriceElement = createTotalPriceElement(0);
+            }
+
             const checkoutButton = createCheckoutButton();
             conteudoCarrinho.appendChild(checkoutButton);
             conteudoCarrinho.appendChild(totalPriceElement);

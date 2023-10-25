@@ -60,7 +60,7 @@ const getCarrinho = function (callback) {
 
 const getCarrinhoFinalValue = function (callback) {
     abrirConexao();
-    let sql = "SELECT c.idUsuario, SUM(m.valorManga * c.quantidadeCarrinho) as valorTotalCarrinho FROM carrinho c JOIN manga m ON c.idManga = m.idManga WHERE c.idUsuario = 1 GROUP BY c.idUsuario"
+    let sql = "SELECT c.idUsuario, IFNULL(SUM(m.valorManga * c.quantidadeCarrinho),0) as valorTotalCarrinho FROM carrinho c JOIN manga m ON c.idManga = m.idManga WHERE c.idUsuario = 1 GROUP BY c.idUsuario"
     connection.query(sql, function (error, results, fields) {
         if (error) {
             console.error("Erro ao executar a consulta:", error);
