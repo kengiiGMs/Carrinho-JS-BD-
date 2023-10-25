@@ -144,16 +144,16 @@
     // Função para criar um card de item no carrinho
     function createCartItemCard(item) {
         const card = document.createElement('div');
-        card.classList.add('card', 'mb-3');
+        card.className = 'card mb-3';
 
         const cardBody = document.createElement('div');
-        cardBody.classList.add('card-body');
+        cardBody.className = 'card-body';
 
-        const paragrafo = document.createElement('p');
-        paragrafo.classList.add('card-text');
-        const precoTotal = (item.valorManga * item.quantidadeCarrinho).toFixed(2);
-        paragrafo.innerHTML = `<b>${item.nomeManga}</b> - ${item.quantidadeCarrinho} Unidades - ${precoTotal}`;
-        cardBody.appendChild(paragrafo);
+        const paragraph = document.createElement('p');
+        paragraph.className = 'card-text';
+        const totalPrice = (item.valorManga * item.quantidadeCarrinho).toFixed(2);
+        paragraph.innerHTML = `<b>${item.nomeManga}</b> - ${item.quantidadeCarrinho} Unidades - ${totalPrice}`;
+        cardBody.appendChild(paragraph);
 
         const deleteButton = createDeleteButton(item.idCarrinho);
         cardBody.appendChild(deleteButton);
@@ -166,75 +166,99 @@
     // Função para criar um botão de exclusão
     function createDeleteButton(idCarrinho) {
         const deleteButton = document.createElement('button');
-        deleteButton.classList.add('btn', 'btn-outline-danger');
+        deleteButton.className = 'btn btn-outline-danger';
         deleteButton.type = 'button';
         deleteButton.textContent = 'Deletar';
-        deleteButton.value = idCarrinho;
-        deleteButton.addEventListener('click', function () {
-            const id = this.value;
-            fetch(`/carrinho/delete/${id}`, {
-                method: 'DELETE'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        console.log(`Item com ID ${id} excluído com sucesso.`);
-                        deleteButton.closest('.card').remove();
-                    } else {
-                        console.error('Erro ao excluir item do carrinho.');
-                    }
-                })
-                .catch(error => console.error(error));
+
+        deleteButton.addEventListener('click', async function () {
+            try {
+                const response = await fetch(`/carrinho/delete/${idCarrinho}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    console.log(`Item com ID ${idCarrinho} excluído com sucesso.`);
+                    deleteButton.closest('.card').remove();
+                    updateTotalPrice();
+                } else {
+                    console.error('Erro ao excluir item do carrinho.');
+                }
+            } catch (error) {
+                console.error(error);
+            }
         });
+
         return deleteButton;
+    }
+
+    // Função para atualizar o valor total do carrinho depois de uma exclusão
+    function updateTotalPrice() {
+        fetch('/carrinho/get/finalValue')
+            .then(response => response.json())
+            .then(data => {
+                const totalPriceElement = createTotalPriceElement(data[0].valorTotalCarrinho);
+                // Substitui o elemento existente com o novo elemento que contém o valor atualizado
+                const existingTotalPriceElement = document.getElementById('totalPriceElement');
+                existingTotalPriceElement.parentNode.replaceChild(totalPriceElement, existingTotalPriceElement);
+            })
+            .catch(error => console.error(error));
     }
 
     // Função para criar o botão "Fechar Pedido"
     function createCheckoutButton() {
         const checkoutButton = document.createElement('button');
-        checkoutButton.classList.add('btn', 'btn-outline-success', 'mt-3');
+        checkoutButton.className = 'btn btn-outline-success mt-3';
         checkoutButton.type = 'button';
-        checkoutButton.style.margin = "auto"
         checkoutButton.textContent = 'Fechar Pedido';
-        checkoutButton.style.display = "block";
+        checkoutButton.style.margin = 'auto';
+        checkoutButton.style.display = 'block';
+
         checkoutButton.addEventListener('click', () => {
-            // Lógica para lidar com o fechamento do pedido aqui
             console.log('Pedido fechado!');
         });
+
         return checkoutButton;
     }
 
-    function createTotalPrice(finalPrice) {
+    // Função para criar o elemento de preço total
+    function createTotalPriceElement(dataCarrinho) {
         const totalPrice = document.createElement('p');
-
-        totalPrice.innerHTML = `Preço Final: <b> ${finalPrice}</b>`;
-        totalPrice.style.margin = "10px"
-        totalPrice.style.textAlign = "center"
+        totalPrice.id = 'totalPriceElement';
+        totalPrice.innerHTML = `Preço Final: <b>${dataCarrinho}</b>`;
+        totalPrice.style.margin = '10px';
+        totalPrice.style.textAlign = 'center';
         return totalPrice;
     }
 
     // Função principal para carregar os itens do carrinho
-    function loadCartItems() {
-        let finalPrice = 0;
-        const conteudoCarrinho = document.getElementById('conteudoCarrinho');
-        fetch('/carrinho/get')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(item => {
-                    const card = createCartItemCard(item);
-                    conteudoCarrinho.appendChild(card);
-                    const precoTotalItem = item.valorManga * item.quantidadeCarrinho;
-                    finalPrice += precoTotalItem;
-                });
-                const totalPrice = createTotalPrice(finalPrice);
-                const checkoutButton = createCheckoutButton();
-                conteudoCarrinho.appendChild(checkoutButton);
-                conteudoCarrinho.appendChild(totalPrice);
-            })
-            .catch(error => console.error(error));
+    async function loadCartItems() {
+        try {
+            const response = await fetch('/carrinho/get');
+            const data = await response.json();
+
+            const responseCarrinho = await fetch('/carrinho/get/finalValue');
+            const dataCarrinho = await responseCarrinho.json();
+
+            const conteudoCarrinho = document.getElementById('conteudoCarrinho');
+            conteudoCarrinho.innerHTML = ''; // Limpando o conteúdo antes de adicionar novos itens
+
+            data.forEach(item => {
+                const card = createCartItemCard(item);
+                conteudoCarrinho.appendChild(card);
+            });
+
+            const totalPriceElement = createTotalPriceElement(dataCarrinho[0].valorTotalCarrinho);
+            const checkoutButton = createCheckoutButton();
+            conteudoCarrinho.appendChild(checkoutButton);
+            conteudoCarrinho.appendChild(totalPriceElement);
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     // Carregar os itens do carrinho quando o DOM estiver pronto
     window.addEventListener('DOMContentLoaded', loadCartItems);
+
 </script>
 
 </html>

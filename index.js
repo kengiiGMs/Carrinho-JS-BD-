@@ -35,6 +35,17 @@ app.get('/carrinho/get', (req, res) => {
     });
 });
 
+app.get('/carrinho/get/finalValue', (req, res) => {
+    con.getCarrinhoFinalValue((err, resultados) => {
+        if (err) {
+            console.error(err);
+        } else {
+            res.json(resultados);
+        }
+    });
+});
+
+
 app.delete('/carrinho/delete/:id', (req, res) => {
     const idCarrinho = req.params.id;
     console.log(idCarrinho);
