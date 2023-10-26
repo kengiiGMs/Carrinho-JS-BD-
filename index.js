@@ -19,6 +19,10 @@ app.get("/manga", function (req, res) {
     res.sendFile('/manga_produto.html', { root: __dirname });
 })
 
+app.get("/pedidos", function (req, res) {
+    res.sendFile('/pedidos.html', { root: __dirname });
+})
+
 app.post('/carrinho/add', (req, res) => {
     const { quantidadeCarrinho, nomeManga } = req.body;
     con.add(quantidadeCarrinho, nomeManga);

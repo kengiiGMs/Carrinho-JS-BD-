@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mangá Store | One Piece</title>
+    <title>Mangá Store | Home</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -31,49 +30,21 @@
                         <a class="nav-link linkAnimation" href="/mangas">Mangás</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link linkAnimation" href="/pedidos">Pedidos</a>
+                        <a class="nav-link linkactive" href="/pedidos">Pedidos</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2 input-search" type="search" placeholder="Procurando algo?"
                         aria-label="Search">
-                    <button class="btn btn-outline btn-purple me-2" type="submit">Buscar</button>
+                    <button class="btn btn-outline btn-purple" type="submit">Buscar</button>
                 </form>
-                <button class="btn btn-outline btn-purple" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Ver Carrinho</button>
             </div>
         </div>
     </nav>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">Carrinho - <i class="bi bi-cart2"></i></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body" id="conteudoCarrinho">
-
-        </div>
-    </div>
-
     <div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a class="colorPurple" href="/">Home</a></li>
-                <li class="breadcrumb-item"><a class="colorPurple" href="/mangas">Mangás</a></li>
-                <li class="breadcrumb-item active" aria-current="page">OnePiece</li>
-            </ol>
-        </nav>
+        <p><b> Meus Pedidos</b></p>
 
-        <div class="card" style="width: 18rem;">
-            <img src="img/onepiece.png" class="card-img-top" alt="...">
-        </div>
-        <form action="/carrinho/add" method="post">
-            <label for="quantidadeCarrinho">Quantidade</label>
-            <input type="number" class="form-control input-search" id="quantidadeCarrinho" name="quantidadeCarrinho"
-                placeholder="Digite a Quantidade" max="10" min="1" required>
-            <button class="btn btn-outline btn-purple" type="submit" value="OnePiece" name="nomeManga">Adicionar ao
-                Carrinho</button>
-        </form>
     </div>
 
 
@@ -142,10 +113,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-    <script src="js/carrinho.js">
-    </script>
-
 </body>
-
 
 </html>

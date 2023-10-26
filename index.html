@@ -29,15 +29,29 @@
                     <li class="nav-item">
                         <a class="nav-link linkAnimation" href="/mangas">Mangás</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link linkAnimation" href="/pedidos">Pedidos</a>
+                    </li>
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2 input-search" type="search" placeholder="Procurando algo?"
                         aria-label="Search">
-                    <button class="btn btn-outline btn-purple" type="submit">Buscar</button>
+                    <button class="btn btn-outline btn-purple me-2" type="submit">Buscar</button>
                 </form>
+                <button class="btn btn-outline btn-purple" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Ver Carrinho</button>
             </div>
         </div>
     </nav>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">Carrinho - <i class="bi bi-cart2"></i></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body" id="conteudoCarrinho">
+
+        </div>
+    </div>
 
     <div class="container containerCarrousel">
         <div id="carouselExample" class="carousel slide">
@@ -145,6 +159,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+    <script src="js/carrinho.js">
+    </script>
 </body>
 
 </html>
