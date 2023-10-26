@@ -57,6 +57,3 @@ create table itensPedido(
  foreign key (idPedido) references pedido(idPedido),
  foreign key (idManga) references manga(idManga)
 )
-
-SELECT m.nomeManga, m.valorManga, i.quantidade, i.idPedido, p.dataPedido FROM itensPedido i INNER JOIN manga m  ON i.idManga = m.idManga INNER JOIN pedido p ON i.idPedido = p.idPedido WHERE p.idUsuario = 1; 
-

@@ -12,11 +12,11 @@ app.get("/", function (req, res) {
 })
 
 app.get("/mangas", function (req, res) {
-    res.sendFile('/mangas_loja.html', { root: __dirname });
+    res.sendFile('/mangas.html', { root: __dirname });
 })
 
-app.get("/manga", function (req, res) {
-    res.sendFile('/manga_produto.html', { root: __dirname });
+app.get("/mangas/onepiece", function (req, res) {
+    res.sendFile('/mangas_onePiece.html', { root: __dirname });
 })
 
 app.get("/orders", function (req, res) {
@@ -26,7 +26,7 @@ app.get("/orders", function (req, res) {
 app.post('/carrinho/add', (req, res) => {
     const { quantidadeCarrinho, nomeManga } = req.body;
     con.add(quantidadeCarrinho, nomeManga);
-    res.redirect('/manga');
+    res.redirect('/mangas/onePiece');
 });
 
 app.get('/carrinho/get', (req, res) => {
@@ -41,16 +41,6 @@ app.get('/carrinho/get', (req, res) => {
 
 app.get('/carrinho/get/finalValue', (req, res) => {
     con.getCarrinhoFinalValue((err, resultados) => {
-        if (err) {
-            console.error(err);
-        } else {
-            res.json(resultados);
-        }
-    });
-});
-
-app.get('/order/get', (req, res) => {
-    con.getOrderById((err, resultados) => {
         if (err) {
             console.error(err);
         } else {
@@ -75,6 +65,16 @@ app.delete('/carrinho/delete/:id', (req, res) => {
     res.sendStatus(200);
 });
 
+app.get('/order/get', (req, res) => {
+    con.getOrderById((err, resultados) => {
+        if (err) {
+            console.error(err);
+        } else {
+            res.json(resultados);
+        }
+    });
+});
+
 app.post('/createOrder/:id', async (req, res) => {
     try {
         const idUsuario = req.params.id;
@@ -82,7 +82,7 @@ app.post('/createOrder/:id', async (req, res) => {
         const carrinho = await con.getCarrinhoId(idUsuario);
         const gerarItemPedido = await con.createItemOrder(carrinho, order, idUsuario);
         const deleteCarrinhoIdUsuario = await con.deleteCarrinhoIdUsuario(idUsuario);
-        res.redirect('/manga');
+        res.status(200);
 
     } catch (error) {
         console.error(error);
@@ -91,9 +91,7 @@ app.post('/createOrder/:id', async (req, res) => {
 });
 
 let server = app.listen(8081, function () {
-
     let host = server.address().address;
     let port = server.address().port;
     console.log("Servidor funcionando", host, port);
-
 })

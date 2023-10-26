@@ -17,7 +17,7 @@ function createCartItemCard(item) {
     return card;
 }
 
-//Função para criar a mensagem quando o carrinho está va
+//Função para criar a mensagem quando o carrinho está vazio
 function createMessage() {
     const message = document.createElement('p');
     message.id = 'message';
