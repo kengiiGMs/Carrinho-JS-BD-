@@ -42,7 +42,7 @@ const add = function add(quantidadeCarrinho, nomeManga) {
     });
 }
 
-const getCarrinho = function (callback, idUsuario) {
+const getCarrinho = function (callback) {
     abrirConexao();
     let sql = "SELECT c.idCarrinho, m.nomeManga, m.valorManga, c.quantidadeCarrinho FROM carrinho c INNER JOIN Manga m ON m.idManga = c.idManga WHERE idUsuario = 1";
     connection.query(sql, function (error, results, fields) {
@@ -147,6 +147,19 @@ const deleteCarrinhoIdUsuario = function add(idUsuario) {
     });
 }
 
+const getOrderById = function (callback) {
+    abrirConexao();
+    let sql = "SELECT m.nomeManga, m.valorManga, i.quantidade, i.idPedido, p.dataPedido FROM itensPedido i INNER JOIN manga m  ON i.idManga = m.idManga INNER JOIN pedido p ON i.idPedido = p.idPedido WHERE p.idUsuario = 1";
+    connection.query(sql, function (error, results, fields) {
+        if (error) {
+            console.error("Erro ao executar a consulta:", error);
+            callback(error, null);
+        } else {
+            console.log("Consulta no Banco Realizado com Sucesso!");
+            callback(null, results);
+        }
+    })
+}
 
 exports.add = add;
 exports.getCarrinho = getCarrinho;
@@ -156,3 +169,4 @@ exports.getCarrinhoId = getCarrinhoId;
 exports.createOrder = createOrder;
 exports.createItemOrder = createItemOrder;
 exports.deleteCarrinhoIdUsuario = deleteCarrinhoIdUsuario;
+exports.getOrderById = getOrderById;

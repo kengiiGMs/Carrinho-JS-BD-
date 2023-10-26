@@ -19,7 +19,7 @@ app.get("/manga", function (req, res) {
     res.sendFile('/manga_produto.html', { root: __dirname });
 })
 
-app.get("/pedidos", function (req, res) {
+app.get("/orders", function (req, res) {
     res.sendFile('/pedidos.html', { root: __dirname });
 })
 
@@ -41,6 +41,26 @@ app.get('/carrinho/get', (req, res) => {
 
 app.get('/carrinho/get/finalValue', (req, res) => {
     con.getCarrinhoFinalValue((err, resultados) => {
+        if (err) {
+            console.error(err);
+        } else {
+            res.json(resultados);
+        }
+    });
+});
+
+app.get('/order/get', (req, res) => {
+    con.getOrderById((err, resultados) => {
+        if (err) {
+            console.error(err);
+        } else {
+            res.json(resultados);
+        }
+    });
+});
+
+app.get('/carrinho/get', (req, res) => {
+    con.getCarrinho((err, resultados) => {
         if (err) {
             console.error(err);
         } else {
