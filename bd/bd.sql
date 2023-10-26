@@ -44,11 +44,15 @@ SELECT * FROM carrinho;
 create table pedido(
 idPedido int not null auto_increment,
 idUsuario int not null,
-dataPedido datetime not null,
+dataPedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP null,
 status char(1) not null,
 primary key(idPedido),
 foreign key (idUsuario) references usuario(idUsuario)
 );
+select * from pedido;
+
+drop table itensPedido;
+drop table pedido;
 
 create table itensPedido(
  idItemPedido int not null auto_increment,
@@ -59,6 +63,5 @@ create table itensPedido(
  foreign key (idPedido) references pedido(idPedido),
  foreign key (idManga) references manga(idManga)
 )
-
-SELECT c.idUsuario, COALESCE(SUM(m.valorManga * c.quantidadeCarrinho),0) as valorTotalCarrinho FROM carrinho c JOIN manga m ON c.idManga = m.idManga WHERE c.idUsuario = 1 GROUP BY c.idUsuario
+SELECT * FROM itensPedido;
 

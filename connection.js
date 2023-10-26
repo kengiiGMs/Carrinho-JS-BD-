@@ -40,21 +40,36 @@ const add = function add(quantidadeCarrinho, nomeManga) {
             console.log("Produto do Carrinho Cadastrado no Banco com Sucesso!", results.insertId);
         }
     });
-
 }
 
-const getCarrinho = function (callback) {
+const getCarrinho = function (callback, idUsuario) {
     abrirConexao();
     let sql = "SELECT c.idCarrinho, m.nomeManga, m.valorManga, c.quantidadeCarrinho FROM carrinho c INNER JOIN Manga m ON m.idManga = c.idManga WHERE idUsuario = 1";
     connection.query(sql, function (error, results, fields) {
         if (error) {
             console.error("Erro ao executar a consulta:", error);
-            callback(error, null); // Passar o erro para o callback
+            callback(error, null);
         } else {
             console.log("Consulta no Banco Realizado com Sucesso!");
-            callback(null, results); // Passar os resultados para o callback
+            callback(null, results);
         }
     })
+}
+
+const getCarrinhoId = function (idUsuario) {
+    return new Promise((resolve, reject) => {
+        abrirConexao();
+        let sql = "SELECT idManga, quantidadeCarrinho FROM carrinho WHERE idUsuario = ?";
+        connection.query(sql, idUsuario, function (error, results, fields) {
+            if (error) {
+                console.error("Erro ao executar a consulta:", error);
+                reject(error);
+            } else {
+                console.log("Consulta no Banco Realizado com Sucesso!");
+                resolve(results);
+            }
+        });
+    });
 }
 
 
@@ -64,15 +79,13 @@ const getCarrinhoFinalValue = function (callback) {
     connection.query(sql, function (error, results, fields) {
         if (error) {
             console.error("Erro ao executar a consulta:", error);
-            callback(error, null); // Passar o erro para o callback
+            callback(error, null);
         } else {
             console.log("Consulta no Banco Realizado com Sucesso!");
-            callback(null, results); // Passar os resultados para o callback
+            callback(null, results);
         }
     })
 }
-
-
 
 const deleteItem = function add(idCarrinho) {
     abrirConexao();
@@ -85,7 +98,53 @@ const deleteItem = function add(idCarrinho) {
             console.log("Produto do Carrinho Deletetado do Banco com Sucesso!", results.insertId);
         }
     });
+}
 
+const createOrder = function createOrder(idUsuario) {
+    return new Promise((resolve, reject) => {
+        abrirConexao();
+        let sql = "INSERT INTO pedido(idUsuario,status) VALUES (?,?)";
+        let dados = [idUsuario, 'A'];
+        connection.query(sql, dados, function (error, results, fields) {
+            if (error) {
+                console.error("Erro ao executar a consulta:", error);
+                reject(error);
+            } else {
+                console.log("Pedido gerado no Banco com Sucesso!");
+                resolve(results.insertId);
+            }
+        });
+    });
+}
+
+const createItemOrder = function createOrder(carrinho, order, idUsuario) {
+    abrirConexao();
+    for (let i = 0; i < carrinho.length; i++) {
+        let sql = "INSERT INTO itensPedido (idPedido,idManga,quantidade) VALUES (?, ? ,?) ";
+
+        let dados = [order, carrinho[i].idManga, carrinho[i].quantidadeCarrinho];
+        connection.query(sql, dados, function (error, results, fields) {
+            if (error) {
+                console.error("Erro ao executar o cadastro:", i, error);
+
+            } else {
+                console.log("Item do Pedido Cadastrado no Banco com Sucesso!", results.insertId);
+            }
+        });
+    }
+}
+
+const deleteCarrinhoIdUsuario = function add(idUsuario) {
+    abrirConexao();
+    let sql = "DELETE FROM carrinho where idUsuario = ?";
+    connection.query(sql, idUsuario, function (error, results, fields) {
+        if (error) {
+            console.error("Erro ao executar a exclusão:", error);
+
+        } else {
+            console.log("Produto do Carrinho Deletetado do Banco com Sucesso!", results.insertId);
+        }
+    });
 }
 
 
@@ -93,3 +152,7 @@ exports.add = add;
 exports.getCarrinho = getCarrinho;
 exports.deleteItem = deleteItem;
 exports.getCarrinhoFinalValue = getCarrinhoFinalValue;
+exports.getCarrinhoId = getCarrinhoId;
+exports.createOrder = createOrder;
+exports.createItemOrder = createItemOrder;
+exports.deleteCarrinhoIdUsuario = deleteCarrinhoIdUsuario;

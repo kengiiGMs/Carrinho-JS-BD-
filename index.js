@@ -45,14 +45,26 @@ app.get('/carrinho/get/finalValue', (req, res) => {
     });
 });
 
-
 app.delete('/carrinho/delete/:id', (req, res) => {
     const idCarrinho = req.params.id;
-    console.log(idCarrinho);
     con.deleteItem(idCarrinho);
     res.sendStatus(200);
 });
 
+app.post('/createOrder/:id', async (req, res) => {
+    try {
+        const idUsuario = req.params.id;
+        const order = await con.createOrder(idUsuario);
+        const carrinho = await con.getCarrinhoId(idUsuario);
+        const gerarItemPedido = await con.createItemOrder(carrinho, order, idUsuario);
+        const deleteCarrinhoIdUsuario = await con.deleteCarrinhoIdUsuario(idUsuario);
+        res.redirect('/manga');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao criar pedido.');
+    }
+});
 
 let server = app.listen(8081, function () {
 
