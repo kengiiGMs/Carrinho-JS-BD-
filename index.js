@@ -30,21 +30,20 @@ app.post('/cart/add', (req, res) => {
             res.status(500).send('302 - Erro ao Adicionar Mangá ao Carrinho');
             return;
         }
-        res.status(200).send('Mangá cadastrada com sucesso no Carrinho');
+        res.status(200).send('Mangá cadastrado com sucesso no Carrinho');
     });
 });
 
-app.post('/cart/get', (req, res) => {
+app.post('/cart/get', async (req, res) => {
     const { userId } = req.body;
-
-    cart.get(userId, (error, results) => {
-        if (error) {
-            console.error('Erro ao obter a lista de mangas: ', error);
-            res.status(500).json({ error: 'Erro ao obter a lista de mangas.' });
-        } else {
-            res.json(results);
-        }
-    })
+    let carrinho;
+    try {
+        carrinho = await cart.get(userId);
+        res.json(carrinho);
+    } catch (error) {
+        console.error('Erro ao obter a lista de mangas: ', error);
+        res.status(500).json({ error: 'Erro ao obter a lista de mangas.' });
+    }
 });
 
 app.delete('/cart/del/:cartId', (req, res) => {
@@ -59,6 +58,26 @@ app.delete('/cart/del/:cartId', (req, res) => {
     });
 
 });
+
+app.post('/cart/finish', async (req, res) => {
+    const { userId } = req.body;
+    let orderId;
+    let cartItems;
+
+    try {
+        orderId = await cart.createOrder(userId);
+        cartItems = await cart.get(userId);
+        await cart.createOrderItens(cartItems, orderId);
+        await cart.delAll(userId);
+
+        res.status(200).send('Pedido gerado com sucesso do carrinho.');
+    } catch (error) {
+        console.error('Erro ao finalizar o pedido:', error);
+        res.status(500).send('Erro ao finalizar o pedido.');
+    }
+
+});
+
 
 
 let server = app.listen(8081, function () {

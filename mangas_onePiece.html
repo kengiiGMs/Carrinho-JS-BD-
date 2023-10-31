@@ -160,7 +160,6 @@
 
                 if (response.ok) {
                     const data = await response.text();
-                    console.log(data); // Mensagem de sucesso do servidor
                     alert(data);
                     document.getElementById('quantity').value = '';
                 } else {
@@ -205,6 +204,37 @@
                         });
 
                         cart.appendChild(fragment);
+
+                        const closeOrderButton = document.createElement('button');
+
+                        closeOrderButton.textContent = 'Fechar Pedido';
+                        closeOrderButton.className = 'btn btn-success'
+                        closeOrderButton.addEventListener('click', async function (event) {
+                            try {
+                                const response = await fetch('/cart/finish', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({ userId })
+                                });
+                                if (response.ok) {
+                                    alert("Pedido Gerado, Verifique-o na sua Página de Pedidos")
+                                    loadCart();
+                                } else {
+                                    console.error('301 - Erro ao gerar Pedido.');
+                                }
+                            } catch (error) {
+                                console.error(error);
+                            }
+                        });
+
+
+                        const divCenter = document.createElement('div');
+                        divCenter.className = 'd-grid gap-2 mt-2';
+
+                        divCenter.appendChild(closeOrderButton);
+                        cart.appendChild(divCenter);
                     }
                 } else {
                     console.error('301 - Erro ao obter a lista de mangas.');
@@ -212,6 +242,9 @@
             } catch (error) {
                 console.error(error);
             }
+
+
+
         }
 
         /* Cria uma estrutura individual para cada Mangá disponível no Banco */
