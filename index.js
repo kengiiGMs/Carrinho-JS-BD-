@@ -34,7 +34,18 @@ app.post('/cart/add', (req, res) => {
     });
 });
 
-app.get('/cart/get', cart.get);
+app.post('/cart/get', (req, res) => {
+    const { userId } = req.body;
+
+    cart.get(userId, (error, results) => {
+        if (error) {
+            console.error('Erro ao obter a lista de mangas: ', error);
+            res.status(500).json({ error: 'Erro ao obter a lista de mangas.' });
+        } else {
+            res.json(results);
+        }
+    })
+});
 
 let server = app.listen(8081, function () {
     let host = server.address().address;

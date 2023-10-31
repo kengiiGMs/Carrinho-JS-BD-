@@ -13,15 +13,15 @@ function add(quantity, mangaId, userId, callback) {
     });
 }
 
-function get(req, res) {
-    const query = 'SELECT c.idCarrinho, m.nomeManga, m.valorManga, c.quantidadeCarrinho FROM carrinho c INNER JOIN Manga m ON m.idManga = c.idManga';
+function get(userId, callback) {
+    const query = 'SELECT c.idCarrinho, m.nomeManga, m.valorManga, c.quantidadeCarrinho FROM carrinho c INNER JOIN Manga m ON m.idManga = c.idManga WHERE c.idUsuario = ?';
 
-    connection.query(query, (error, results, fields) => {
+    connection.query(query, userId, (error, results, fields) => {
         if (error) {
-            console.error('303 - Erro ao obter a lista de mangas: ', error);
-            res.status(500).json({ error: '303 - Erro ao obter a lista de mangas.' });
+            console.error('Erro ao obter a lista de mangas: ', error);
+            callback(error, null);
         } else {
-            res.json(results);
+            callback(null, results);
         }
     });
 }

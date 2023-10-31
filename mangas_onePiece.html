@@ -178,8 +178,17 @@
 
         /* Exibindo Mangás no Carrinho */
         async function loadCart() {
+            const userId = 1;
+
             try {
-                const response = await fetch('/cart/get');
+                const response = await fetch('/cart/get', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId })
+                });
+
                 if (response.ok) {
                     const mangas = await response.json();
                     cart.innerHTML = '';
