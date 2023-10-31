@@ -34,6 +34,7 @@ app.post('/cart/add', (req, res) => {
     });
 });
 
+app.get('/cart/get', cart.get);
 
 let server = app.listen(8081, function () {
     let host = server.address().address;
