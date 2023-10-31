@@ -39,6 +39,8 @@ foreign key(idManga) references manga(idManga),
 foreign key (idUsuario) references usuario(idUsuario)
 );
 
+SELECT * FROM carrinho;
+
 create table pedido(
 idPedido int not null auto_increment,
 idUsuario int not null,
@@ -47,6 +49,8 @@ status char(1) not null,
 primary key(idPedido),
 foreign key (idUsuario) references usuario(idUsuario)
 );
+
+SELECT * FROM pedido;
 
 create table itensPedido(
  idItemPedido int not null auto_increment,

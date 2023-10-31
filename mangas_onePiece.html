@@ -220,14 +220,44 @@
             container.className = 'cart-item';
 
             const mangaInfo = document.createElement('div');
-            mangaInfo.className = 'manga-info';
+            mangaInfo.className = 'manga-info btn btn-outline btn-purple';
             mangaInfo.textContent = `Mangá: ${manga.nomeManga}, Preço: ${manga.valorManga}, Quantidade: ${manga.quantidadeCarrinho}`;
+            const deleteButton = document.createElement('button');
+
+            deleteButton.textContent = 'Deletar';
+            deleteButton.className = 'btn btn-outline-danger'
+            deleteButton.classList.add('btn-delete');
+            deleteButton.dataset.cartId = manga.idCarrinho;
+
+            deleteButton.addEventListener('click', async function (event) {
+                const cartId = event.target.dataset.cartId;
+                try {
+                    const response = await fetch(`/cart/del/${cartId}`, {
+                        method: 'DELETE'
+                    });
+                    if (response.ok) {
+                        loadCart();
+                    } else {
+                        console.error('301 - Erro ao excluir mangá do carrinho.');
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+
+            const divCenter = document.createElement('div');
+            divCenter.className = 'd-grid gap-2 mt-2';
+
+            divCenter.appendChild(deleteButton);
 
             const divider = document.createElement('hr');
             container.appendChild(mangaInfo);
+            container.appendChild(divCenter);
             container.appendChild(divider);
+
             return container;
         }
+
 
         /* Botão para Abrir Carrinho */
         const openCartButton = document.getElementById('openCart');

@@ -8,7 +8,7 @@ function add(quantity, mangaId, userId, callback) {
             callback(error, null);
             return;
         }
-        console.log('Manga cadastrado com sucesso BD');
+        console.log('Manga cadastrado com sucesso');
         callback(null, results);
     });
 }
@@ -26,8 +26,20 @@ function get(userId, callback) {
     });
 }
 
+function del(cartId, callback) {
+    const sql = 'DELETE FROM carrinho WHERE idCarrinho = ?';
+    connection.query(sql, cartId, (error, results, fields) => {
+        if (error) {
+            console.error('303 - Erro ao Remover Mangá ao Carrinho', error);
+            callback(error, null);
+            return;
+        }
+        console.log('Manga Removido com sucesso');
+        callback(null, results);
+    });
+}
 
 
 module.exports = {
-    add, get
+    add, get, del
 };

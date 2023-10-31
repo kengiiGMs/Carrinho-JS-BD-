@@ -47,6 +47,20 @@ app.post('/cart/get', (req, res) => {
     })
 });
 
+app.delete('/cart/del/:cartId', (req, res) => {
+    const cartId = req.params.cartId;
+    console.log(cartId);
+    cart.del(cartId, (error, results) => {
+        if (error) {
+            res.status(500).send('302 - Erro ao Excluir Mangá ao Carrinho');
+            return;
+        }
+        res.status(200).send('Mangá excluido com sucesso do Carrinho');
+    });
+
+});
+
+
 let server = app.listen(8081, function () {
     let host = server.address().address;
     let port = server.address().port;
