@@ -149,7 +149,6 @@
             const userId = 1;
             const quantity = document.getElementById('quantity').value;
 
-
             try {
                 const response = await fetch('/cart/add', {
                     method: 'POST',
@@ -193,26 +192,41 @@
                     const mangas = await response.json();
                     cart.innerHTML = '';
 
-                    mangas.forEach(manga => {
-                        const mangaName = document.createElement('div');
-                        mangaName.textContent = manga.nomeManga;
-                        const mangaPrice = document.createElement('div');
-                        mangaPrice.textContent = manga.valorManga;
-                        const mangaQuantity = document.createElement('div');
-                        mangaQuantity.textContent = manga.quantidadeCarrinho;
-                        const hr = document.createElement('hr');
+                    if (mangas.length == 0) {
+                        const message = document.createElement('div');
+                        message.textContent = "Você não possui nenhum Mangá no Carrinho !";
+                        cart.appendChild(message);
+                    } else {
+                        const fragment = document.createDocumentFragment();
 
-                        cart.appendChild(mangaName);
-                        cart.appendChild(mangaPrice);
-                        cart.appendChild(mangaQuantity);
-                        cart.appendChild(hr);
-                    });
+                        mangas.forEach(manga => {
+                            const cartItem = createCartItemElement(manga);
+                            fragment.appendChild(cartItem);
+                        });
+
+                        cart.appendChild(fragment);
+                    }
                 } else {
                     console.error('301 - Erro ao obter a lista de mangas.');
                 }
             } catch (error) {
                 console.error(error);
             }
+        }
+
+        /* Cria uma estrutura individual para cada Mangá disponível no Banco */
+        function createCartItemElement(manga) {
+            const container = document.createElement('div');
+            container.className = 'cart-item';
+
+            const mangaInfo = document.createElement('div');
+            mangaInfo.className = 'manga-info';
+            mangaInfo.textContent = `Mangá: ${manga.nomeManga}, Preço: ${manga.valorManga}, Quantidade: ${manga.quantidadeCarrinho}`;
+
+            const divider = document.createElement('hr');
+            container.appendChild(mangaInfo);
+            container.appendChild(divider);
+            return container;
         }
 
         /* Botão para Abrir Carrinho */
