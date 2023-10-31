@@ -65,11 +65,11 @@
         <div class="card" style="width: 18rem;">
             <img src="../img/onePiece.png" class="card-img-top" alt="...">
         </div>
-        <form action="/carrinho/add" method="post">
-            <label for="quantidadeCarrinho">Quantidade</label>
-            <input type="number" class="form-control input-search" id="quantidadeCarrinho" name="quantidadeCarrinho"
+        <form id="formAdd">
+            <label for="quantity">Quantidade</label>
+            <input type="number" class="form-control input-search" id="quantity" name="quantity"
                 placeholder="Digite a Quantidade" max="10" min="1" required>
-            <button class="btn btn-outline btn-purple" type="submit" value="OnePiece" name="nomeManga">Adicionar ao
+            <button class="btn btn-outline btn-purple" type="submit" value="1" id="mangaId" name="mangaId">Adicionar ao
                 Carrinho</button>
         </form>
     </div>
@@ -140,8 +140,39 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
-    <script src="../js/carrinho.js"></script>
 
+    <script>
+        /* Manipulando o Formulario de Cadastro de de mangás no Carrinho */
+        document.getElementById('formAdd').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const mangaId = document.getElementById('mangaId').value;
+            const userId = 1;
+            const quantity = document.getElementById('quantity').value;
+
+
+            try {
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ mangaId, quantity, userId })
+                });
+
+                if (response.ok) {
+                    const data = await response.text();
+                    console.log(data); // Mensagem de sucesso do servidor
+                    alert(data);
+                    document.getElementById('quantity').value = '';
+                } else {
+                    console.error('301 - Erro ao Adicionar Mangá ao Carrinho');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+    </script>
 </body>
 
 </html>
