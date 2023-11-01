@@ -44,7 +44,7 @@
 
     <div class="container">
         <p><b> Meus Pedidos</b></p>
-        <div id="containerPedido"></div>
+        <div id="orderContainer"></div>
     </div>
 
     <div class="container">
@@ -114,6 +114,78 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+    <script>
+        /* Manipulando o Carrinho */
+        const order = document.getElementById('orderContainer');
+
+        /* Exibindo Mangás no Carrinho */
+        async function loadItensOrders() {
+            const userId = 1;
+
+            try {
+                const response = await fetch(`/itensOrders/get?userId=${userId}`, {
+                    method: 'POST' // Alterado para método GET
+                });
+
+                if (response.ok) {
+                    const itensOrders = await response.json();
+                    order.innerHTML = '';
+
+                    if (itensOrders.length === 0) {
+                        const message = document.createElement('div');
+                        message.textContent = "Você não possui nenhum Pedido !";
+                        order.appendChild(message);
+                    } else {
+                        const fragment = document.createDocumentFragment();
+                        let currentOrderId = itensOrders[0].idPedido;
+
+                        itensOrders.forEach((item, index) => {
+                            const orderItem = createOrderItemElement(item);
+                            fragment.appendChild(orderItem);
+
+                            // Verifica se o próximo item tem um idPedido diferente
+                            if (index < itensOrders.length - 1 && item.idPedido !== itensOrders[index + 1].idPedido) {
+                                const divider = document.createElement('hr');
+                                fragment.appendChild(divider);
+                            }
+                        });
+
+                        order.appendChild(fragment);
+                    }
+                }
+                else {
+                    console.error('301 - Erro ao obter a lista de mangas.');
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        /* Cria uma estrutura individual para cada Mangá disponível no Banco */
+        function createOrderItemElement(item) {
+            const container = document.createElement('div');
+            container.className = 'order-item';
+
+            const mangaInfo = document.createElement('div');
+            mangaInfo.className = 'order-info btn btn-outline btn-purple';
+
+            let dataFormatar = new Date(item.dataPedido);
+            const dia = String(dataFormatar.getDate()).padStart(2, '0');
+            const mes = String(dataFormatar.getMonth() + 1).padStart(2, '0');
+            const ano = dataFormatar.getFullYear();
+            const dataFinal = `${dia}/${mes}/${ano}`;
+
+            mangaInfo.textContent = `Pedido: ${item.idPedido} Mangá: ${item.nomeManga}, Preço: ${item.valorManga}, Quantidade: ${item.quantidade} Data: ${dataFinal}`;
+
+            container.appendChild(mangaInfo);
+
+            return container;
+        }
+
+
+        /* Busca e Exibe os Pedidos quando a pagina Carrega totalmente */
+        document.addEventListener('DOMContentLoaded', loadItensOrders);
+    </script>
 </body>
 
 </html>

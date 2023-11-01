@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require('path');
 const app = express();
-const cart = require('./cart');
+const cart = require('./cartSQL');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -44,10 +44,10 @@ app.post('/cart/add', (req, res) => {
 
 app.post('/cart/get', async (req, res) => {
     const { userId } = req.body;
-    let carrinho;
+    let cartItens;
     try {
-        carrinho = await cart.get(userId);
-        res.json(carrinho);
+        cartItens = await cart.get(userId);
+        res.json(cartItens);
     } catch (error) {
         console.error('Erro ao obter a lista de mangas: ', error);
         res.status(500).json({ error: 'Erro ao obter a lista de mangas.' });
@@ -81,10 +81,23 @@ app.post('/cart/finish', async (req, res) => {
         res.status(200).send('Pedido gerado com sucesso do carrinho.');
     } catch (error) {
         console.error('Erro ao finalizar o pedido:', error);
-        res.status(500).send('Erro ao finalizar o pedido.');
+        res.status(500).send('302 - Erro ao finalizar o pedido.');
     }
 
 });
+
+app.post("/itensOrders/get", async function (req, res) {
+    const userId = req.query.userId;
+    let orderItens;
+    try {
+        orderItens = await cart.getItensOrders(userId);
+        res.json(orderItens);
+    } catch (error) {
+        console.error('Erro ao obter a lista de itens dos Pedidos: ', error);
+        res.status(500).json({ error: '302 - Erro ao obter a lista de mangas.' });
+    }
+})
+
 
 
 

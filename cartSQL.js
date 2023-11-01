@@ -92,10 +92,20 @@ function delAll(userId) {
 }
 
 
+async function getItensOrders(userId) {
+    let query = "SELECT m.nomeManga, m.valorManga, i.quantidade, i.idPedido, DATE(p.dataPedido) as dataPedido FROM itensPedido i INNER JOIN manga m  ON i.idManga = m.idManga INNER JOIN pedido p ON i.idPedido = p.idPedido WHERE p.idUsuario = ? ORDER BY i.idPedido";
 
+    try {
+        const results = await queryAsync(query, userId);
+        return results;
+    } catch (error) {
+        console.error('Erro ao obter a lista de mangas: ', error);
+        throw error;
+    }
+}
 
 
 
 module.exports = {
-    add, get, del, createOrder, createOrderItens, delAll
+    add, get, del, createOrder, createOrderItens, delAll, getItensOrders
 };
