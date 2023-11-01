@@ -17,6 +17,10 @@
     color: var(--purple) !important;
 }
 
+.colorBlack {
+    color: black !important;
+}
+
 a {
     text-decoration: none;
 }
