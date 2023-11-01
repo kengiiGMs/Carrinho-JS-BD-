@@ -91,3 +91,10 @@ a {
 .linkfooter:hover {
     color: var(--purple);
 }
+
+
+/* Cards Pedidos */
+
+.cardPurple {
+    border: solid 1px var(--purple);
+}

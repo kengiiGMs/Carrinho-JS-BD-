@@ -56,3 +56,4 @@ create table itensPedido(
  foreign key (idPedido) references pedido(idPedido),
  foreign key (idManga) references manga(idManga)
 );
+drop table itensPedido;

@@ -43,7 +43,7 @@
     </nav>
 
     <div class="container">
-        <p><b> Meus Pedidos</b></p>
+        <p><b>Meus Pedidos</b></p>
         <div id="orderContainer"></div>
     </div>
 
@@ -163,23 +163,53 @@
 
         /* Cria uma estrutura individual para cada Mangá disponível no Banco */
         function createOrderItemElement(item) {
-            const container = document.createElement('div');
-            container.className = 'order-item';
+            /* <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                   
+                    <p class="card-text">Quantidade: 2</p>
+                    <p class="card-text">Preço Unitario: 34.90 </p>
+                </div>
+                </div> 
+            */
+            const card = document.createElement('div');
+            card.className = 'card cardPurple mb-1';
+            card.style = 'width: 18rem';
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
 
-            const mangaInfo = document.createElement('div');
-            mangaInfo.className = 'order-info btn btn-outline btn-purple';
+            const h5 = document.createElement('h5');
+            h5.className = 'card-title colorPurple';
+            h5.textContent = `Pedido: ${item.idPedido}`
+
+            const h6 = document.createElement('h6');
+            h6.className = 'card-subtitle mb-2 text-body-secondary';
+            h6.textContent = `${item.nomeManga}`
+
+            const pQuantidade = document.createElement('p');
+            pQuantidade.className = 'card-text';
+            pQuantidade.textContent = `Quantidade: ${item.quantidade}`
+
+            const pPreco = document.createElement('p');
+            pPreco.className = 'card-text';
+            pPreco.textContent = `Preço: ${item.valorManga}`
 
             let dataFormatar = new Date(item.dataPedido);
             const dia = String(dataFormatar.getDate()).padStart(2, '0');
             const mes = String(dataFormatar.getMonth() + 1).padStart(2, '0');
             const ano = dataFormatar.getFullYear();
             const dataFinal = `${dia}/${mes}/${ano}`;
+            const pData = document.createElement('p');
+            pData.className = 'card-text';
+            pData.textContent = `Preço: ${dataFinal}`
 
-            mangaInfo.textContent = `Pedido: ${item.idPedido} Mangá: ${item.nomeManga}, Preço: ${item.valorManga}, Quantidade: ${item.quantidade} Data: ${dataFinal}`;
+            cardBody.appendChild(h5);
+            cardBody.appendChild(h6);
+            cardBody.appendChild(pQuantidade);
+            cardBody.appendChild(pPreco);
 
-            container.appendChild(mangaInfo);
+            card.appendChild(cardBody);
 
-            return container;
+            return card;
         }
 
 
