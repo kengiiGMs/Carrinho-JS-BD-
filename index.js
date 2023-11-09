@@ -12,23 +12,23 @@ app.get("/", function (req, res) {
 })
 
 app.get("/mangas", function (req, res) {
-    res.sendFile('/mangas.html', { root: __dirname });
+    res.sendFile('/pages/mangas.html', { root: __dirname });
 })
 
 app.get("/mangas/onepiece", function (req, res) {
-    res.sendFile('/mangas_onePiece.html', { root: __dirname });
+    res.sendFile('/pages/mangas_onePiece.html', { root: __dirname });
 })
 
 app.get("/mangas/kimetsu", function (req, res) {
-    res.sendFile('/mangas_kimetsu.html', { root: __dirname });
+    res.sendFile('/pages/mangas_kimetsu.html', { root: __dirname });
 })
 
 app.get("/mangas/jujutsu", function (req, res) {
-    res.sendFile('/mangas_jujutsu.html', { root: __dirname });
+    res.sendFile('/pages/mangas_jujutsu.html', { root: __dirname });
 })
 
 app.get("/orders", function (req, res) {
-    res.sendFile('/pedidos.html', { root: __dirname });
+    res.sendFile('/pages/pedidos.html', { root: __dirname });
 })
 
 app.post('/cart/add', (req, res) => {
