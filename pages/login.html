@@ -11,23 +11,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../img/logo.png" type="image/png">
-    <style>
-        .containerLogin {
-            border: 1px solid #6467F2;
-            border-radius: 2px;
-            box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
-        }
 
 
-        h2 {
-            color: #6467F2;
-        }
-
-        a {
-            color: black;
-
-        }
-    </style>
 </head>
 
 <body>
@@ -67,20 +52,20 @@
     <div class="d-flex align-items-center justify-content-center" style="height: 80vh;">
         <div class="container containerLogin" style="max-width: 40%;">
             <div class="container center mb-3 pt-4">
-                <h2>
+                <h2 class="colorPurple ">
                     Faça o seu Login
                 </h2>
             </div>
             <form action="">
                 <div class="form-floating mb-3">
-                    <input type="email" class="form-control input-search" id="floatingInput"
-                        placeholder="name@example.com">
-                    <label for="floatingInput">Insira o seu Email</label>
+                    <input type="email" class="form-control input-login" placeholder="Insira o seu Email"
+                        id="emailLogin">
+                    <label for="emailLogin">Insira o seu Email</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control input-search" id="floatingPassword"
-                        placeholder="Password">
-                    <label for="floatingPassword">Digite a sua Senha</label>
+                    <input type="password" class="form-control input-login" placeholder="Digite a sua Senha"
+                        id="passwordLogin">
+                    <label for="passwordLogin">Digite a sua Senha</label>
                 </div>
                 <hr>
                 <div class="d-grid gap-2 mb-3">
@@ -88,7 +73,7 @@
                 </div>
 
                 <div class="container center mb-2">
-                    <a href="/login/create">Criar Login</a>
+                    <a href="/login/create" class="colorBlack">Criar Login</a>
                 </div>
             </form>
         </div>

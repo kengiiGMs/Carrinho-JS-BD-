@@ -31,6 +31,16 @@ app.get("/orders", function (req, res) {
     res.sendFile('/pages/pedidos.html', { root: __dirname });
 })
 
+app.get("/login", function (req, res) {
+    res.sendFile('pages/login.html', { root: __dirname });
+})
+
+app.get("/login/create", function (req, res) {
+    res.sendFile('pages/login_create.html', { root: __dirname });
+})
+
+
+
 app.post('/cart/add', (req, res) => {
     const { quantity, mangaId, userId } = req.body;
     cart.add(quantity, mangaId, userId, (error, results) => {
