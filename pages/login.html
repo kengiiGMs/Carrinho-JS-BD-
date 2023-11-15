@@ -56,7 +56,7 @@
                     Faça o seu Login
                 </h2>
             </div>
-            <form action="/logar" method="post">
+            <form id="formLogin">
                 <div class="form-floating mb-3">
                     <input type="email" class="form-control input-login" placeholder="Insira o seu Email"
                         id="emailLogin">
@@ -80,5 +80,40 @@
     </div>
 
 </body>
+
+<script>
+
+    /* Manipulando o Formulario de Cadastro de de mangás no Carrinho */
+    document.getElementById('formLogin').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const email = document.getElementById('emailLogin').value;
+        const password = document.getElementById('passwordLogin').value;
+
+        try {
+            const response = await fetch('/login/action/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            if (response.ok) {
+                const login = await response.json();
+
+                if (login.length == 0) {
+                    alert("Senha ou Email Incorretos!");
+                } else {
+                    alert("Logado com Sucesso!");
+                }
+
+            } else {
+                console.error('301 - Erro ao efetuar o Login');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    });
+</script>
 
 </html>
