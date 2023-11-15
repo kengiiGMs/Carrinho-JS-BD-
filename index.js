@@ -4,6 +4,7 @@ const app = express();
 const cart = require('./cartSQL');
 const login = require('./loginSQL');
 const e = require("express");
+const { error } = require("console");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -54,12 +55,14 @@ app.post('/login/action/signin', async (req, res) => {
 });
 
 app.post("/login/action/signup", async (req, res) => {
-    try {
-        const { nomeUsuario, emailUsuario, senhaUsuario } = req.body;
-    } catch (error) {
+    const { name, email, password } = req.body;
+    login.add(name, email, password, (error, results)=>{
+        if(error){
         console.error('Erro no cadastro: ', error.message);
         res.status(500).send('302 - Erro interno no servidor');
-    }
+        }
+        res.redirect("/");
+    })
 });
 
 app.post('/cart/add', (req, res) => {

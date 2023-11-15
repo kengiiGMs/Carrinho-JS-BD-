@@ -16,15 +16,15 @@ async function get(emailUsuario, senhaUsuario) {
   }
 }
 
-function add(quantity, mangaId, userId, callback) {
-  const sql = 'INSERT INTO carrinho(idManga, idUsuario, quantidadeCarrinho) VALUES (?, ?,?)';
-  connection.query(sql, [mangaId, userId, quantity], (error, results, fields) => {
+function add(name, email, password, callback) {
+  const sql = 'INSERT INTO usuario(nomeUsuario, emailUsuario, senhaUsuario) VALUES (?, ?,?)';
+  connection.query(sql, [name, email, password], (error, results, fields) => {
     if (error) {
-      console.error('303 - Erro ao Adicionar Mangá ao Carrinho', error);
+      console.error('303 - Erro ao cadastrar usuario', error);
       callback(error, null);
       return;
     }
-    console.log('Manga cadastrado com sucesso');
+    console.log('usuario cadastrado');
     callback(null, results);
   });
 }
