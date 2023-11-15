@@ -2,6 +2,9 @@ const express = require("express");
 const path = require('path');
 const app = express();
 const cart = require('./cartSQL');
+const loginn = require('./loginSQL');
+
+
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -35,11 +38,40 @@ app.get("/login", function (req, res) {
     res.sendFile('pages/login.html', { root: __dirname });
 })
 
+app.post('/logar', async (req, res) => {
+    try {
+      const { email, senha } = req.body;
+      const usuario = await loginn.buscarUsuarioPorEmail(email);
+  
+      if (usuario && usuario.senha === senha) {
+        res.status(200).send('Login bem-sucedido!'); 
+   /*      res.redirect('/index.html', { root: __dirname }); */
+      } else {
+        res.status(401).send('Credenciais inválidas');
+      }
+    } catch (error) {
+      console.error('Erro no login: ', error);
+      res.status(500).send('Erro interno no servidor');
+    }
+  });
+
 app.get("/login/create", function (req, res) {
     res.sendFile('pages/login_create.html', { root: __dirname });
 })
 
-
+app.post("/cadastro", async (req, res) => {
+    try {
+      const { nomeUsuario, emailUsuario, senhaUsuario } = req.body;
+      const usuario = { nomeUsuario, emailUsuario, senhaUsuario };
+  
+      await loginn.cadastrarUsuario(usuario);
+      res.status(20).send('Usuário cadastrado com sucesso!');
+      res.redirect("/index", {root: __dirname});
+    } catch (error) {
+      console.error('Erro no cadastro: ', error.message);
+      res.status(50).send('Erro interno no servidor');
+    }
+  });
 
 app.post('/cart/add', (req, res) => {
     const { quantity, mangaId, userId } = req.body;
