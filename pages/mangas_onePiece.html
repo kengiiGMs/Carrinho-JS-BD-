@@ -30,7 +30,7 @@
                     <li class="nav-item">
                         <a class="nav-link linkAnimation" href="/mangas">Mangás</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item  orderLink">
                         <a class="nav-link linkAnimation" href="/orders">Pedidos</a>
                     </li>
                 </ul>
@@ -39,9 +39,14 @@
                         aria-label="Search">
                     <button class="btn btn-outline btn-purple me-2" type="submit">Buscar</button>
                 </form>
-                <button  class="btn btn-outline btn-purple me-2" type="button" data-bs-toggle="offcanvas"><a href="/login"><i class="bi bi-person-fill"></i></a> </button>
-                <button class="btn btn-outline btn-purple" type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" id="openCart"><i class="bi bi-cart2"></i>
+                <button class="btn btn-outline btn-purple me-2 btn-login" type="button" data-bs-toggle="offcanvas"
+                    onclick="window.location.href = '/login'" style="display: none;"><i class="bi bi-person-fill"></i>
+                </button>
+                <button class="btn btn-outline btn-purple me-2 btn-cart" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" id="openCart"
+                    style="display: none;"><i class="bi bi-cart2"></i></button>
+                <button class="btn btn-outline btn-purple btn-exit">
+                    <i class="bi bi-box-arrow-right"></i>
                 </button>
             </div>
         </div>
@@ -173,7 +178,7 @@
         document.getElementById('formAdd').addEventListener('submit', async function (event) {
             event.preventDefault();
             const mangaId = document.getElementById('mangaId').value;
-            const userId = 1;
+            const userId = sessionStorage.getItem('SESSION_idUsuario');;
             const quantity = document.getElementById('quantity').value;
 
             try {
@@ -198,6 +203,7 @@
         });
     </script>
     <script src="../js/cart.js"></script>
+    <script src="../js/buttonisSignin.js"></script>
 
 </body>
 

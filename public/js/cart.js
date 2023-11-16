@@ -3,7 +3,7 @@ const cart = document.getElementById('cartContainer');
 
 /* Exibindo Mangás no Carrinho */
 async function loadCart() {
-    const userId = 1;
+    const userId = sessionStorage.getItem('SESSION_idUsuario');;
 
     try {
         const response = await fetch('/cart/get', {

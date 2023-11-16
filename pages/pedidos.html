@@ -120,7 +120,7 @@
 
         /* Exibindo Mangás no Carrinho */
         async function loadItensOrders() {
-            const userId = 1;
+            const userId = sessionStorage.getItem('SESSION_idUsuario');;
 
             try {
                 const response = await fetch(`/itensOrders/get?userId=${userId}`, {

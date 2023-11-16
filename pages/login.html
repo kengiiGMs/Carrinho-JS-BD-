@@ -32,7 +32,7 @@
                     <li class="nav-item">
                         <a class="nav-link linkAnimation" href="/mangas">Mangás</a>
                     </li>
-                   <!--  <li class="nav-item">
+                    <!--  <li class="nav-item">
                         <a class="nav-link linkAnimation" href="/orders">Pedidos</a>
                     </li> -->
                 </ul>
@@ -96,12 +96,14 @@
 
             if (response.ok) {
                 const login = await response.json();
-
                 if (login.length == 0) {
                     alert("Senha ou Email Incorretos!");
+
                 } else {
                     alert("Logado com Sucesso!");
-
+                    sessionStorage.setItem('SESSION_idUsuario', login[0].idUsuario);
+                    sessionStorage.setItem('SESSION_isSignin', true);
+                    window.location.href = "/";
                 }
 
             } else {

@@ -4,7 +4,7 @@ const queryAsync = util.promisify(connection.query).bind(connection);
 
 
 async function get(emailUsuario, senhaUsuario) {
-  const query = 'SELECT * FROM usuario WHERE emailUsuario = ? AND senhaUsuario = ?';
+  const query = 'SELECT idUsuario FROM usuario WHERE emailUsuario = ? AND senhaUsuario = ?';
   dados = [emailUsuario, senhaUsuario];
 
   try {
